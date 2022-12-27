@@ -4,7 +4,7 @@ let anwerEl = document.getElementById("answer")
 let equalsBtnClicked = false;
 let values = []
 let value1=""
-let answer = ""
+let answer = []
 let operatorValues = []
 
 
@@ -60,26 +60,51 @@ function operator(operator, array){
     }
 }
 
-// get first value
+function recordValue(){
+    values.push(Number(value1))
+    value1 =""
+}
+
+function calculate(){
+    if(!equalsBtnClicked){
+        previousOperator = operatorValues.shift()
+        answer = operator(previousOperator,values)
+        anwerEl.innerHTML = answer
+        values = [answer]
+    }
+
+}
 
 function getValue(){
     document.querySelectorAll('.number').forEach(item => {
         item.addEventListener("click",(event) => {
             displayEl.innerHTML += `${event.target.innerHTML}`
             value1 += event.target.innerHTML
-            console.log(value1)
         })
     })
     
     document.querySelectorAll('.operator').forEach(item =>  {
         item.addEventListener("click",(event) => {
-            values.push(Number(value1))
-            console.log(values)
+            displayEl.innerHTML += `${event.target.innerHTML}`
+            recordValue()
+            operatorValues.push(event.target.innerHTML)
+            console.log(operatorValues)
+            if(values.length >= 2){
+                calculate()
+            }
         })
     })
 }
 
 getValue()
+equalEl.addEventListener('click', (event)=> {
+    recordValue()
+    calculate()
+    equalsBtnClicked = !equalsBtnClicked
+    console.log(values)
+    console.log(operatorValues)
+})
+
 
 
 
