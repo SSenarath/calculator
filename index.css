@@ -1,11 +1,14 @@
 * > {
     box-sizing:border-box;
+    font-family: 'Orbitron', sans-serif;
     
 }
 
-h1{
+h1,h3{
    text-align: center;
    margin-bottom: 50px;
+   font-family: 'Orbitron', sans-serif;
+   letter-spacing: 1px;
 }
 
 h2{
@@ -14,17 +17,10 @@ h2{
     
 }
 
-#answer {
-    color: aliceblue;
-    text-align: right;
-    font-size: 2.2em;
-    margin-top: 12.5px;
-    
-}
-
 
 main {
     margin: auto;
+    margin-top: 100px;
     max-width: 25em;
     border: 2px solid black;
 }
@@ -32,14 +28,41 @@ main {
 button{
     padding: 20px 0px;
     font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .screen {
+    position: relative;
     margin: 1em;
     padding: 3px;
     height: 5em;
-    background-color: rgb(76, 76, 107);
+    background-color: rgb(170, 149, 154);
     margin-bottom: 1em;
+}
+
+
+#display {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    font-size: 1.2em;
+    color: rgb(53, 51, 51);
+    
+}
+
+#answer {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    position: absolute;
+    color: aliceblue;
+    text-align: right;
+    font-size: 1.45em;
+    margin-top: 12.5px;
+    bottom: 5px;
+    right: 0;
+    
 }
 
 .buttons {
@@ -47,4 +70,8 @@ button{
     display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: 1em;
+}
+
+.grid-col-span-2 {
+    grid-column: span 2;
 }
