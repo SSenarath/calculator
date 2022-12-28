@@ -2,6 +2,7 @@ import {operator} from "./mathFunctions.js";
 
 let displayEl = document.getElementById("display")
 let answerEl = document.getElementById("answer")
+let messageEl = document.getElementById("message-el")
 let storedValues = []
 let storedOperators = []
 let value1 = ""
@@ -10,6 +11,7 @@ let answer = ""
 let operatorClicked = true
 let operatorValue =""
 let uniqueOperatorOn = true
+const message = "Please press 'CLEAR' to continue using calculator"
  
 
 function addOperator(sign){
@@ -25,6 +27,8 @@ document.querySelectorAll(".number").forEach(item => {
             }
             value1 += event.target.innerHTML
             answerEl.innerHTML = value1
+        } else {
+            messageEl.innerHTML = message
         }
 
     
@@ -72,6 +76,8 @@ document.querySelectorAll(".operator").forEach(item => {
                 displayEl.innerHTML += operatorValue
                 operatorClicked = true;
             }    
+        } else {
+            messageEl.innerHTML = message
         }
         
     })
@@ -104,6 +110,8 @@ document.querySelectorAll(".unique-operator").forEach(item => {
             storedValues = []
             value1 = answer
         }
+    } else {
+        messageEl.innerHTML = message
     }
         
     })
@@ -118,6 +126,8 @@ document.querySelector(".negative").addEventListener("click", () => {
         answerEl.innerText = answerEl.innerHTML*(-1)
         value1 = answerEl.innerText
         console.log(value1)
+    } else {
+        messageEl.innerHTML = message
     }
     
 })
@@ -147,6 +157,7 @@ function clear(){
     displayEl.innerHTML =""
     answerEl.innerHTML=""
     operatorClicked = true
+    messageEl.innerHTML = ""
 }
 
 
