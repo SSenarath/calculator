@@ -128,5 +128,10 @@ document.querySelector("#equals-el").addEventListener("click", event => {
         displayEl.innerHTML = answer
 })
 
+document.querySelector(".negative").addEventListener("click", () => {
+    value1 = Number(value1)*(-1)
+    displayEl.innerHTML = value1
+})
+
 
 
