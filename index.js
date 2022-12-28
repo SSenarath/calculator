@@ -135,3 +135,5 @@ document.querySelector(".negative").addEventListener("click", () => {
 
 
 
+let count ="22.2"
+console.log(Number(count))
