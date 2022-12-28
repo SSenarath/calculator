@@ -29,6 +29,10 @@ function power(array){
     })
 }
 
+function squareroot(array){
+   return Math.sqrt(array)
+    
+}
 
 function operator(operator, array){
     switch(operator){
@@ -39,16 +43,32 @@ function operator(operator, array){
             return subtract(array);
             break;
         case "x":
-            return multiply(array);;
+            return multiply(array);
             break;
         case "/":
-            return divide(array);;
+            return divide(array);
             break;
         case "^":
-            return  power(array);;
+            return  power(array);
             break;
+        case "√":
+            return squareroot(array);
+            break;
+        case "!":
+        if(array === 0) {
+            return 1;
+          } else {
+            let answer = 1;
+            for (let i = array; i > 0; i--){
+              answer *= i;
+            }
+            return answer;
+          }
+        break;
     }
 }
+
+console.log(operator("√",8))
 
 let displayEl = document.getElementById("display")
 let answerEl = document.getElementById("answer")
@@ -58,7 +78,7 @@ let operators = []
 let value1 = ""
 let answer = ""
 
-// get first value
+// store user inputted value
 
 document.querySelectorAll(".number").forEach(item => {
     item.addEventListener("click", event => {
@@ -68,37 +88,44 @@ document.querySelectorAll(".number").forEach(item => {
     })
 })
 
-// push first value to array when any operator is pressed
-
 document.querySelectorAll(".operator").forEach(item => {
     item.addEventListener("click", event => {
         displayEl.innerHTML += event.target.innerHTML
-        numbers.push(Number(value1))
-        value1 = ""
+        numbers.push(Number(value1)) // push user input value to array
         console.log(numbers)
+        value1 = "" // reset value for next user input
         operators.push(event.target.innerHTML)
-        console.log(operators)
         if(numbers.length >= 2) {
             previousOperator = operators.shift()
             answer = operator(previousOperator,numbers)
             answerEl.innerHTML = answer
-            console.log(answer)
+            displayEl.innerHTML = `${answer}${operators[0]}`
             numbers = [answer]
-            console.log(numbers)
         }
+        
+    })
+})
+
+document.querySelectorAll(".unique-operator").forEach(item => {
+    item.addEventListener('click', event => {
+        numbers.push(Number(value1))
+        answer = operator(event.target.innerHTML,numbers)
+        answerEl.innerHTML = answer
+        displayEl.innerHTML = `${answer}`
+        numbers = []
+        value1 = answer
     })
 })
 
 document.querySelector("#equals-el").addEventListener("click", event => {
         numbers.push(Number(value1))
         value1 = ""
-        console.log(numbers)
         previousOperator = operators.shift()
         answer = operator(previousOperator,numbers)
-        console.log(answer)
         numbers = []
         value1 = answer
         answerEl.innerHTML = answer
+        displayEl.innerHTML = answer
 })
 
 

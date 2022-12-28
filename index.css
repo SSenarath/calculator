@@ -10,6 +10,7 @@ h1{
 
 h2{
     margin: 0;
+    padding: 0px 10px;
     
 }
 
@@ -17,11 +18,12 @@ h2{
     color: aliceblue;
     text-align: right;
     font-size: 2.2em;
+    margin-top: 12.5px;
+    
 }
 
 
 main {
-
     margin: auto;
     max-width: 25em;
     border: 2px solid black;
@@ -33,6 +35,7 @@ button{
 }
 
 .screen {
+    margin: 1em;
     padding: 3px;
     height: 5em;
     background-color: rgb(76, 76, 107);
@@ -40,6 +43,7 @@ button{
 }
 
 .buttons {
+    margin: 1em;
     display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: 1em;
