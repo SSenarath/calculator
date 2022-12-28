@@ -1,13 +1,3 @@
-let displayEl = document.getElementById("display")
-let equalEl = document.getElementById("equals-el")
-let anwerEl = document.getElementById("answer")
-let equalsBtnClicked = false;
-let values = []
-let value1=""
-let answer = []
-let operatorValues = []
-
-
 function add(array){
     return  array.reduce((prev, current) => {
         return prev + current
@@ -60,91 +50,56 @@ function operator(operator, array){
     }
 }
 
-function recordValue(){
-    values.push(Number(value1))
-    value1 =""
-}
+let displayEl = document.getElementById("display")
+let answerEl = document.getElementById("answer")
+let previousOperator = ""
+let numbers = []
+let operators = []
+let value1 = ""
+let answer = ""
 
-function calculate(){
-    if(!equalsBtnClicked){
-        previousOperator = operatorValues.shift()
-        answer = operator(previousOperator,values)
-        anwerEl.innerHTML = answer
-        values = [answer]
-    }
+// get first value
 
-}
-
-function getValue(){
-    document.querySelectorAll('.number').forEach(item => {
-        item.addEventListener("click",(event) => {
-            displayEl.innerHTML += `${event.target.innerHTML}`
-            value1 += event.target.innerHTML
-        })
+document.querySelectorAll(".number").forEach(item => {
+    item.addEventListener("click", event => {
+        value1 += event.target.innerHTML
+        displayEl.innerHTML += event.target.innerHTML
+        console.log(value1)
     })
-    
-    document.querySelectorAll('.operator').forEach(item =>  {
-        item.addEventListener("click",(event) => {
-            displayEl.innerHTML += `${event.target.innerHTML}`
-            recordValue()
-            operatorValues.push(event.target.innerHTML)
-            console.log(operatorValues)
-            if(values.length >= 2){
-                calculate()
-            }
-        })
-    })
-}
+})
 
-getValue()
-equalEl.addEventListener('click', (event)=> {
-    recordValue()
-    calculate()
-    equalsBtnClicked = !equalsBtnClicked
-    console.log(values)
-    console.log(operatorValues)
+// push first value to array when any operator is pressed
+
+document.querySelectorAll(".operator").forEach(item => {
+    item.addEventListener("click", event => {
+        displayEl.innerHTML += event.target.innerHTML
+        numbers.push(Number(value1))
+        value1 = ""
+        console.log(numbers)
+        operators.push(event.target.innerHTML)
+        console.log(operators)
+        if(numbers.length >= 2) {
+            previousOperator = operators.shift()
+            answer = operator(previousOperator,numbers)
+            answerEl.innerHTML = answer
+            console.log(answer)
+            numbers = [answer]
+            console.log(numbers)
+        }
+    })
+})
+
+document.querySelector("#equals-el").addEventListener("click", event => {
+        numbers.push(Number(value1))
+        value1 = ""
+        console.log(numbers)
+        previousOperator = operators.shift()
+        answer = operator(previousOperator,numbers)
+        console.log(answer)
+        numbers = []
+        value1 = answer
+        answerEl.innerHTML = answer
 })
 
 
-
-
-// document.querySelectorAll('.operator').forEach(item => {
-//     item.addEventListener("click",(event) => {
-//         if(!equalsBtnClicked)  {
-//             values.push(Number(value1))
-//             value1 =""
-//             console.log(values)
-//             operatorValues.push(event.target.innerHTML)
-//             console.log(operatorValues)
-//             displayEl.innerHTML += `${event.target.innerHTML}`
-
-//         } else {
-//             value1 =""
-//             operatorValues.push(event.target.innerHTML)
-//             displayEl.innerHTML += `${event.target.innerHTML}`
-//         }
-
-//     })
-// })
-
-// document.querySelectorAll('.operator').forEach(item => {
-//     item.addEventListener("click",(event) => {
-//         if(values.length >= 2) {
-//             if(!equalsBtnClicked){
-//                 anwerEl.innerHTML = operator(operatorValues[0], values)
-//                 operatorValues = [operatorValues[1]]
-//                 values = [Number(anwerEl.innerHTML)]
-//             }
-            
-//         }
-//     })
-// })
-
-// equalEl.addEventListener('click', () => {
-//     values.push(Number(value1))
-//     console.log(values)
-//     anwerEl.innerHTML = operator(operatorValues[0], values)
-//     equalsBtnClicked = !equalsBtnClicked
-
-// })
 
