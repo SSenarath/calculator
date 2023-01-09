@@ -39,7 +39,6 @@ button{
     background-color: rgb(170, 149, 154);
     margin-bottom: 1em;
     position: relative;
-    width: 362px;
     overflow-x: scroll;
 
 }

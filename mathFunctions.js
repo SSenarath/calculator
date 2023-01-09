@@ -40,8 +40,8 @@ function squareroot(array){
     
 }
 
-function operator(operator, array){
-    switch(operator){
+function operator(operatorvalue, array){
+    switch(operatorvalue){
         case "+":
             return add(array);
             break;
