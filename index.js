@@ -1,163 +1,157 @@
-import {operator} from "./mathFunctions.js";
+import Calculate from "./Calculate.js";
 
-let displayEl = document.getElementById("display")
-let answerEl = document.getElementById("answer")
-let messageEl = document.getElementById("message-el")
-let storedValues = []
-let storedOperators = []
-let value1 = ""
-let value2 =""
-let answer = ""
-let operatorClicked = true
-let operatorValue =""
-let uniqueOperatorOn = true
-const message = "Please press 'CLEAR' to continue using calculator"
- 
+let numberBtns = document.querySelectorAll(".number");
+let operatorBtns = document.querySelectorAll(".operator");
+let display = document.querySelector("#display");
+let equal = document.querySelector("#equals");
+let displayAnswer = document.getElementById("answer");
+let messagEl = document.getElementById("message-el");
+let answer = "";
+let pair = [];
+let num = "";
+let operator = "";
+let operatorClicked = false;
+let equalClicked = false;
+let uniqueOperatorClicked = false;
+let stopCalculator = false;
+const message = "Please press 'CLEAR' to continue using calculator";
 
-function addOperator(sign){
-    storedOperators.push(sign)  
-}
+numberBtns.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    if(stopCalculator === false) {
+        if (operator) {
+            pair.push(operator);
+            display.innerHTML += event.target.innerHTML;
+            num += String(event.target.innerHTML);
+            console.log(num)
+            operatorClicked = false;
+          } else if (!operator) {
+            //only runs for the first number inputted
+            display.innerHTML += event.target.innerHTML;
+            num += event.target.innerHTML;
+            operatorClicked = false;
+          }
+    }
+  });
+});
 
-document.querySelectorAll(".number").forEach(item => {
-    item.addEventListener("click", event => {
-        if(displayEl.innerHTML !== "ERROR"){
-            if(operatorClicked === true && operatorValue){
-                addOperator(operatorValue)
-                operatorClicked = false;
+document.querySelectorAll(".unique-operator").forEach((item) => {
+  item.addEventListener("click", (event) => {
+    operator = event.target.innerHTML;
+    pair.push(num);
+    pair.push(operator);
+    pair.push("");
+    answer = new Calculate(pair);
+  });
+});
+
+operatorBtns.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    if(stopCalculator === false) {
+        if ((event.target.innerHTML === "!" | "√") && uniqueOperatorClicked === false) {
+            operator = event.target.innerHTML;
+            display.innerHTML += operator;
+            pair.push(num);
+            pair.push(operator);
+            pair.push("");
+            answer = new Calculate(pair);
+            answer = answer.getAnswerSingleNum();
+            displayAnswer.innerHTML = answer;
+            pair = [answer];
+            uniqueOperatorClicked = true;
+            if (answer === Infinity | answer === "ERROR") {
+                messagEl.innerHTML = message;
+                stopCalculator = true;
             }
-            value1 += event.target.innerHTML
-            answerEl.innerHTML = value1
-        } else {
-            messageEl.innerHTML = message
-        }
-
-    
-    })
-})
-
-
-function storeUserNumber(){
-    displayEl.innerHTML += value1
-    value2 = value1
-    storedValues.push(Number(value2))
-    value1 =""
-}
-
-function renderAnswer(){
-    answer = operator(storedOperators.shift(),storedValues)
-    if(answer === "ERROR"){
-        clear()
-        displayEl.innerHTML = "ERROR"
-    } else {
-        storedValues = [answer]
-        displayEl.innerHTML = answer
-    }
-
-}
-
-// add functionality for all other operators
-
-document.querySelectorAll(".operator").forEach(item => {
-    item.addEventListener("click", event => {
-        if(displayEl.innerHTML !== "ERROR"){
-            uniqueOperatorOn = false;
-            storeUserNumber()
-            if(operatorClicked && operatorValue){
-                operatorValue = event.target.innerHTML;
-                displayEl.innerHTML = displayEl.innerHTML.slice(0,-1)
-                displayEl.innerHTML += operatorValue
-            } else if(operatorClicked) {
-                operatorValue = event.target.innerHTML;
-                displayEl.innerHTML += operatorValue
-            } else {
-                renderAnswer()
-                answerEl.innerHTML = ""
-                operatorValue = event.target.innerHTML;
-                displayEl.innerHTML += operatorValue
-                operatorClicked = true;
-            }    
-        } else {
-            messageEl.innerHTML = message
-        }
-        
-    })
-})
-
-// add functionalilty for equals button
-
-document.querySelector("#equals-el").addEventListener("click", event => {
-    if(storedValues.length > 0){
-        storeUserNumber()
-        renderAnswer()
-        answerEl.innerHTML = answer
-        operatorClicked = true;
-        operatorValue =""
-        uniqueOperatorOn = true
-    }
-})
-
-// add functionality for √ and ! operators
-document.querySelectorAll(".unique-operator").forEach(item => {
-    item.addEventListener('click', event => {
-    if(displayEl.innerHTML !== "ERROR"){
-        if(uniqueOperatorOn){
-            if(storedValues = []){
-                storedValues.push(Number(value1))
+        } else if ((event.target.innerHTML === "!" | "√") && uniqueOperatorClicked === true) {
+            operator = event.target.innerHTML;
+            display.innerHTML = `${displayAnswer.innerHTML}${operator}`;
+            pair.push(operator);
+            pair.push("");
+            answer = new Calculate(pair);
+            answer = answer.getAnswerSingleNum();
+            displayAnswer.innerHTML = answer;
+            pair = [answer];
+            if (answer === Infinity | answer === "ERROR") {
+                messagEl.innerHTML = message;
+                stopCalculator = true;
             }
-            answer = operator(event.target.innerHTML,answerEl.innerHTML)
-            answerEl.innerHTML = answer
-            displayEl.innerHTML = `${answer}` 
-            storedValues = []
-            value1 = answer
+        } else if(event.target.innerHTML !== "!" || "√") {
+
+        uniqueOperatorClicked = false;
+
+        if (operatorClicked === false) {
+            pair.push(num);
+            num = "";
+
         }
-    } else {
-        messageEl.innerHTML = message
+
+        if (equalClicked === true) {
+            pair = [answer];
+            display.innerHTML = answer;
+            equalClicked = false;
+            operator = "";
+        }
+
+        if (!operator) {
+            operator = event.target.innerHTML;
+            display.innerHTML += operator;
+            operatorClicked = true;
+
+        } else if (operator && pair.length === 3) {
+            answer = new Calculate(pair);
+            answer = answer.getAnswer();
+            display.innerHTML = answer;
+            pair = [answer];
+            operator = event.target.innerHTML;
+            display.innerHTML += operator;
+            operatorClicked = true;
+            if (answer === Infinity | answer === "ERROR") {
+                messagEl.innerHTML = message;
+                stopCalculator = true;
+            }
+        } else {
+            display.innerHTML = display.innerHTML.slice(0, -1);
+            operator = event.target.innerHTML;
+            display.innerHTML += operator;
+            operatorClicked = true;
+        }
+        }
     }
-        
-    })
-})
+  });
+});
 
-
-
-
-// add functionality for negatve button
-document.querySelector(".negative").addEventListener("click", () => {
-    if(displayEl.innerHTML !== "ERROR"){
-        answerEl.innerText = answerEl.innerHTML*(-1)
-        value1 = answerEl.innerText
-        console.log(value1)
-    } else {
-        messageEl.innerHTML = message
+equal.addEventListener("click", (event) => {
+    if(stopCalculator === false) {
+        if (!equalClicked) {
+            pair.push(num);
+            answer = new Calculate(pair);
+            answer = answer.getAnswer();
+            displayAnswer.innerHTML = answer;
+            equalClicked = true;
+            if (answer === Infinity | answer === "ERROR") {
+                messagEl.innerHTML = message;
+                stopCalculator = true;
+            }
+        }
     }
-    
-})
+});
 
-// add functionality for clear button
+document.querySelector(".clear-btn").addEventListener("click", () => {
+    console.log('clicked')
+    clear();
+});
 
-document.querySelector(".clear-btn").addEventListener('click', () => {
-    clear()
-})
-
-// add functionality for delete button
-
-document.querySelector(".delete-btn").addEventListener('click', () => {
-    if(answerEl.innerHTML.length > 0){
-        displayEl.innerHTML = displayEl.innerHTML.slice(0,-1)
-        answerEl.innerHTML = answerEl.innerHTML.slice(0,-1)
-        value1 = answerEl.innerHTML
-    }
-
-})
-
-function clear(){
-    storedValues = []
-    storedOperators = []
-    value1 = ""
-    answer = ""
-    displayEl.innerHTML =""
-    answerEl.innerHTML=""
-    operatorClicked = true
-    messageEl.innerHTML = ""
+function clear() {
+  answer = "";
+  pair = [];
+  num = "";
+  operator = "";
+  operatorClicked = false;
+  equalClicked = false;
+  uniqueOperatorClicked = false;
+  stopCalculator = false;
+  display.innerHTML = '';
+  displayAnswer.innerHTML = '';
+  messagEl.innerHTML = '';
 }
-
-
