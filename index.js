@@ -14,41 +14,44 @@ let operatorClicked = false;
 let equalClicked = false;
 let uniqueOperatorClicked = false;
 let stopCalculator = false;
+let decimalUsed = false;
 const message = "Please press 'CLEAR' to continue using calculator";
 
 numberBtns.forEach((item) => {
   item.addEventListener("click", (event) => {
     if(stopCalculator === false) {
+        if(event.target.innerHTML === "."){
+            decimalUsed = true
+            document.getElementById('decimal').disabled = true;
+        }
+        messagEl.innerHTML = ``
         if (operator) {
             pair.push(operator);
+            console.log(operator)
             display.innerHTML += event.target.innerHTML;
             num += String(event.target.innerHTML);
-            console.log(num)
             operatorClicked = false;
+            operator =''
+            
+            
           } else if (!operator) {
             //only runs for the first number inputted
             display.innerHTML += event.target.innerHTML;
             num += event.target.innerHTML;
             operatorClicked = false;
+            console.log(num)
+            
           }
     }
   });
 });
 
-document.querySelectorAll(".unique-operator").forEach((item) => {
-  item.addEventListener("click", (event) => {
-    operator = event.target.innerHTML;
-    pair.push(num);
-    pair.push(operator);
-    pair.push("");
-    answer = new Calculate(pair);
-  });
-});
+
 
 operatorBtns.forEach((item) => {
   item.addEventListener("click", (event) => {
-    if(stopCalculator === false) {
-        if ((event.target.innerHTML === "!" | "√") && uniqueOperatorClicked === false) {
+    if(stopCalculator === false && display.innerHTML !== "") {
+        if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === false) {
             operator = event.target.innerHTML;
             display.innerHTML += operator;
             pair.push(num);
@@ -63,7 +66,7 @@ operatorBtns.forEach((item) => {
                 messagEl.innerHTML = message;
                 stopCalculator = true;
             }
-        } else if ((event.target.innerHTML === "!" | "√") && uniqueOperatorClicked === true) {
+        } else if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === true) {
             operator = event.target.innerHTML;
             display.innerHTML = `${displayAnswer.innerHTML}${operator}`;
             pair.push(operator);
@@ -81,10 +84,12 @@ operatorBtns.forEach((item) => {
         uniqueOperatorClicked = false;
 
         if (operatorClicked === false) {
+            console.log(num)
             pair.push(num);
             num = "";
 
         }
+
 
         if (equalClicked === true) {
             pair = [answer];
@@ -93,12 +98,10 @@ operatorBtns.forEach((item) => {
             operator = "";
         }
 
-        if (!operator) {
-            operator = event.target.innerHTML;
-            display.innerHTML += operator;
-            operatorClicked = true;
 
-        } else if (operator && pair.length === 3) {
+        if(!operator && pair.length === 3) {
+            decimalUsed = false
+            console.log(pair)
             answer = new Calculate(pair);
             answer = answer.getAnswer();
             display.innerHTML = answer;
@@ -110,6 +113,11 @@ operatorBtns.forEach((item) => {
                 messagEl.innerHTML = message;
                 stopCalculator = true;
             }
+        } else if (!operator) {
+            operator = event.target.innerHTML;
+            display.innerHTML += operator;
+            operatorClicked = true;
+
         } else {
             display.innerHTML = display.innerHTML.slice(0, -1);
             operator = event.target.innerHTML;
@@ -117,6 +125,8 @@ operatorBtns.forEach((item) => {
             operatorClicked = true;
         }
         }
+    } else {
+        messagEl.innerHTML = `Please enter a number before selecting an operator`;
     }
   });
 });
@@ -124,6 +134,10 @@ operatorBtns.forEach((item) => {
 equal.addEventListener("click", (event) => {
     if(stopCalculator === false) {
         if (!equalClicked) {
+            if(pair.length < 2) {
+                messagEl.innerHTML = `Please enter more arguments`
+            } else {
+            decimalUsed = false
             pair.push(num);
             answer = new Calculate(pair);
             answer = answer.getAnswer();
@@ -133,12 +147,11 @@ equal.addEventListener("click", (event) => {
                 messagEl.innerHTML = message;
                 stopCalculator = true;
             }
-        }
-    }
+            }
+    }}
 });
 
 document.querySelector(".clear-btn").addEventListener("click", () => {
-    console.log('clicked')
     clear();
 });
 
@@ -154,4 +167,5 @@ function clear() {
   display.innerHTML = '';
   displayAnswer.innerHTML = '';
   messagEl.innerHTML = '';
+  decimalUsed = false;
 }
