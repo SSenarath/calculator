@@ -27,8 +27,7 @@ numberBtns.forEach((item) => {
         messagEl.innerHTML = ``
         if (operator) {
             pair.push(operator);
-            console.log(operator)
-            display.innerHTML += event.target.innerHTML;
+            displayAnswer.innerHTML += event.target.innerHTML;
             num += String(event.target.innerHTML);
             operatorClicked = false;
             operator =''
@@ -36,10 +35,9 @@ numberBtns.forEach((item) => {
             
           } else if (!operator) {
             //only runs for the first number inputted
-            display.innerHTML += event.target.innerHTML;
+            displayAnswer.innerHTML += event.target.innerHTML;
             num += event.target.innerHTML;
             operatorClicked = false;
-            console.log(num)
             
           }
     }
@@ -50,23 +48,73 @@ numberBtns.forEach((item) => {
 
 operatorBtns.forEach((item) => {
   item.addEventListener("click", (event) => {
-    if(stopCalculator === false && display.innerHTML !== "") {
+    if(stopCalculator === false && (displayAnswer.innerHTML !== "" || display.innerHTML !== "")) {
         if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === false) {
             operator = event.target.innerHTML;
-            display.innerHTML += operator;
-            pair.push(num);
-            pair.push(operator);
-            pair.push("");
-            answer = new Calculate(pair);
-            answer = answer.getAnswerSingleNum();
-            displayAnswer.innerHTML = answer;
-            pair = [answer];
-            uniqueOperatorClicked = true;
-            if (answer === Infinity | answer === "ERROR") {
+            console.log('hi')
+            operatorClicked = true
+ 
+            if (equalClicked === true) {
+                console.log('first')
+                pair = [answer]
+                display.innerHTML =''
+                equalClicked = false;
+                display.innerHTML += `${answer}${operator}`
+                pair.push(operator);
+                pair.push("");
+                answer = new Calculate(pair);
+                answer = answer.getAnswerSingleNum();
+                displayAnswer.innerHTML = answer;
+                pair = [answer];
+                uniqueOperatorClicked = true;
+                if (answer === Infinity | answer === "ERROR") {
                 messagEl.innerHTML = message;
                 stopCalculator = true;
+                }
+            
+            }else if (display.innerHTML === '') {
+                console.log('third')
+                display.innerHTML += `${num}${operator}`;
+                pair.push(num);
+                pair.push(operator);
+                pair.push("");
+                answer = new Calculate(pair);
+                answer = answer.getAnswerSingleNum();
+                displayAnswer.innerHTML = answer;
+                pair = [answer];
+                uniqueOperatorClicked = true;
+                if (answer === Infinity | answer === "ERROR") {
+                    messagEl.innerHTML = message;
+                    stopCalculator = true;
+                }
+
+            } 
+            else if(operatorClicked === true){
+                console.log('second')
+                pair.push(num);
+                answer = new Calculate(pair);
+                answer = answer.getAnswer();
+                display.innerHTML = `${answer}${operator}`
+                num = "";
+                decimalUsed = false
+                document.getElementById('decimal').disabled = false
+                if (answer === Infinity | answer === "ERROR") {
+                    messagEl.innerHTML = message;
+                    stopCalculator = true;
+                }
+                console.log(answer)
+                console.log(operator)
+                pair = [answer,operator, ""]
+                answer = new Calculate(pair);
+                answer = answer.getAnswerSingleNum();
+                displayAnswer.innerHTML = answer
+                uniqueOperatorClicked = true
+
             }
+            
+            
         } else if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === true) {
+            console.log('fourth')
             operator = event.target.innerHTML;
             display.innerHTML = `${displayAnswer.innerHTML}${operator}`;
             pair.push(operator);
@@ -84,9 +132,11 @@ operatorBtns.forEach((item) => {
         uniqueOperatorClicked = false;
 
         if (operatorClicked === false) {
-            console.log(num)
+            display.innerHTML = num
+            displayAnswer.innerHTML = ''
             pair.push(num);
             num = "";
+            document.getElementById('decimal').disabled = false
 
         }
 
@@ -101,7 +151,6 @@ operatorBtns.forEach((item) => {
 
         if(!operator && pair.length === 3) {
             decimalUsed = false
-            console.log(pair)
             answer = new Calculate(pair);
             answer = answer.getAnswer();
             display.innerHTML = answer;
@@ -164,8 +213,9 @@ function clear() {
   equalClicked = false;
   uniqueOperatorClicked = false;
   stopCalculator = false;
+  decimalUsed = false;
+  document.getElementById('decimal').disabled = false
   display.innerHTML = '';
   displayAnswer.innerHTML = '';
   messagEl.innerHTML = '';
-  decimalUsed = false;
 }
