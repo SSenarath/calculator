@@ -1,5 +1,8 @@
 import {operator} from "./mathFunctions.js";
 let answer = 0
+let decimalNum = 0
+let wholeNumberLength = 0 
+let totalLength = 0
 
 
 export default class Calculate {
@@ -11,12 +14,24 @@ export default class Calculate {
     }
 
     getAnswer() {
-        return operator(this.operatorvalue, this.numbers)
+        let answer = operator(this.operatorvalue, this.numbers)
+        if (Number.isInteger(answer)) {
+            return answer;
+         } else {
+            wholeNumberLength = answer.toString().split('.')[0].length
+            decimalNum = answer.toString().split('.')[1].length
+            totalLength = wholeNumberLength + decimalNum
+            if(totalLength > 16) {
+                return answer.toFixed(totalLength - wholeNumberLength)
+            } else {
+                return answer
+            }
+        }
     }
 
     getAnswerSingleNum() {
-        console.log(this.operatorvalue)
-        console.log(this.number1)
         return operator(this.operatorvalue, this.number1)
     }
 }
+
+
