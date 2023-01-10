@@ -51,10 +51,16 @@ operatorBtns.forEach((item) => {
     if(stopCalculator === false && (displayAnswer.innerHTML !== "" || display.innerHTML !== "")) {
         if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === false) {
             operator = event.target.innerHTML;
-            console.log('hi')
+            if(!Number.isInteger((Number(displayAnswer.innerHTML)) || !Number.isInteger(Number(display.innerHTML))) && operator === "!"){
+                stopCalculator = true;
+                messagEl.innerHTML = `This calculator cannot calculate factorials of decimals, please press CLEAR and restart`;
+            }
+           
+            
+            console.log(`hi`)
             operatorClicked = true
  
-            if (equalClicked === true) {
+            if (equalClicked === true && stopCalculator === false) {
                 console.log('first')
                 pair = [answer]
                 display.innerHTML =''
@@ -72,7 +78,7 @@ operatorBtns.forEach((item) => {
                 stopCalculator = true;
                 }
             
-            }else if (display.innerHTML === '') {
+            }else if (display.innerHTML === '' && stopCalculator === false) {
                 console.log('third')
                 display.innerHTML += `${num}${operator}`;
                 pair.push(num);
@@ -89,7 +95,7 @@ operatorBtns.forEach((item) => {
                 }
 
             } 
-            else if(operatorClicked === true){
+            else if(operatorClicked === true && stopCalculator === false){
                 console.log('second')
                 pair.push(num);
                 answer = new Calculate(pair);
@@ -108,26 +114,35 @@ operatorBtns.forEach((item) => {
                 answer = new Calculate(pair);
                 answer = answer.getAnswerSingleNum();
                 displayAnswer.innerHTML = answer
+                pair = [answer]
                 uniqueOperatorClicked = true
 
             }
             
             
-        } else if ((event.target.innerHTML === "!" || event.target.innerHTML === "√") && uniqueOperatorClicked === true) {
-            console.log('fourth')
+        } else if ((event.target.innerHTML === "!" | event.target.innerHTML === "√") && uniqueOperatorClicked === true) {
             operator = event.target.innerHTML;
-            display.innerHTML = `${displayAnswer.innerHTML}${operator}`;
-            pair.push(operator);
-            pair.push("");
-            answer = new Calculate(pair);
-            answer = answer.getAnswerSingleNum();
-            displayAnswer.innerHTML = answer;
-            pair = [answer];
-            if (answer === Infinity | answer === "ERROR") {
-                messagEl.innerHTML = message;
+            if(!Number.isInteger(Number(display.innerHTML)) && operator === "!"){
                 stopCalculator = true;
+                messagEl.innerHTML = `This calculator cannot calculate factorials of decimals, please press CLEAR and restart`;
             }
-        } else if(event.target.innerHTML !== "!" || "√") {
+            if(stopCalculator === false){
+                display.innerHTML = `${displayAnswer.innerHTML}${operator}`;
+                pair.push(operator);
+                pair.push("");
+                console.log(pair)
+                answer = new Calculate(pair);
+                answer = answer.getAnswerSingleNum();
+                console.log(answer)
+                displayAnswer.innerHTML = answer;
+                pair = [answer];
+                if (answer === Infinity | answer === "ERROR") {
+                    messagEl.innerHTML = message;
+                    stopCalculator = true;
+                }
+            }
+          
+        } else if(event.target.innerHTML !== "!" || event.target.innerHTML !== "√") {
 
         uniqueOperatorClicked = false;
 
@@ -174,6 +189,8 @@ operatorBtns.forEach((item) => {
             operatorClicked = true;
         }
         }
+    } else if (messagEl.innerHTML === `This calculator cannot calculate factorials of decimals, please press CLEAR and restart`) {
+        
     } else {
         messagEl.innerHTML = `Please enter a number before selecting an operator`;
     }
@@ -188,6 +205,7 @@ equal.addEventListener("click", (event) => {
             } else {
             decimalUsed = false
             pair.push(num);
+            display.innerHTML += num
             answer = new Calculate(pair);
             answer = answer.getAnswer();
             displayAnswer.innerHTML = answer;
