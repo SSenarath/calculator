@@ -15,7 +15,9 @@ export default class Calculate {
 
     getAnswer() {
         let answer = operator(this.operatorvalue, this.numbers)
-        if (Number.isInteger(answer)) {
+        if (answer === "ERROR"){
+            return "ERROR"
+        } else if(Number.isInteger(answer)) {
             return answer;
          } else {
             wholeNumberLength = answer.toString().split('.')[0].length
