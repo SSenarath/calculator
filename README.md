@@ -1,6 +1,6 @@
 # Calculator
 
-Description: A simple calculator that allows users to perform basic math functions. This project was the final solo project from [The Odin Project Foundations Course](https://www.theodinproject.com/paths/foundations/courses/foundations). 
+A simple calculator that allows users to perform basic math functions. This project was the final solo project from [The Odin Project Foundations Course](https://www.theodinproject.com/paths/foundations/courses/foundations). 
 
 ## Table of Contents
 * [Demo](#demo)
