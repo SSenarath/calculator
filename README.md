@@ -39,15 +39,17 @@ Description: A simple calculator that allows users to perform basic math functio
 ### Screenshots
 **How to Use:**
 
-![](https://github.com/SSenarath/calculator/blob/f142c395fa7e9ac3499992e428e2a9ba90253efd/screenshots/calculator-demo.gif)
+![](https://github.com/SSenarath/calculator/blob/b2f34d09addf30f55e3651aa858995d270637c04/screenshots/calculator-demo.gif)
+
+
 
 **Demo of Error Message When User Divides by Zero**
 
-![](https://github.com/SSenarath/calculator/blob/f142c395fa7e9ac3499992e428e2a9ba90253efd/screenshots/divide-error.gif)
+![](https://github.com/SSenarath/calculator/blob/b2f34d09addf30f55e3651aa858995d270637c04/screenshots/divide-error.gif)
 
 **Demo of Error Message When User Requests Factorial of Floating-Point Number**
 
-![](https://github.com/SSenarath/calculator/blob/f142c395fa7e9ac3499992e428e2a9ba90253efd/screenshots/floating-number-error.gif)
+![](https://github.com/SSenarath/calculator/blob/b2f34d09addf30f55e3651aa858995d270637c04/screenshots/floating-number-error.gif)
 
 ## Next Steps
 - [x] Add a functional delete button, so the user can undo if they click the wrong numbers. 
