@@ -99,6 +99,7 @@ button{
 footer {
     text-align: center;
     background-color: rgb(170, 149, 154);
+    margin-top: auto;
 }
 
 footer p {
