@@ -23,13 +23,13 @@ A simple calculator that allows users to perform basic math functions. This proj
 ## Overview
 ### Requirements
 - [x] Allow user to perform the math functions listed below on calculator once user inputs two numbers and selects an operator. The calculator should not evaluate more than a single pair of numbers at a time. 
-      *	Add
-      *	Subtract
-      *	Multiply
-      *	Divide
-      *	Exponent
-      *	Root
-      *	Factorial
+   *	Add
+   *	Subtract
+   *	Multiply
+   *	Divide
+   *	Exponent
+   *	Root
+   *	Factorial
 
 - [x]	Allow user to clear calculator memory.
 - [x] Round answers so answer does not overflow the screen. 
